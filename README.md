@@ -71,3 +71,5 @@ curl -X GET 'http://localhost:8095/todos/2'
 
 http://localhost:8095/
 
+Get all the todos : http://localhost:8095/todos/all
+
