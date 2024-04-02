@@ -56,12 +56,10 @@ public class ToDoResource {
     public Response add(ToDo toDo, @Context UriInfo uriInfo) {
 
         toDo.getSubtasks().forEach(subTask -> {
-            toDo.addSubTask(subTask); // Set the parent ToDo of each SubTask
+            toDo.addSubTask(subTask);
         });
 
-        ToDo persistedToDo = toDoRepository.insert(toDo); // Persist the ToDo along with its SubTasks
-
-        // Building the response
+        ToDo persistedToDo = toDoRepository.insert(toDo);
         URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(persistedToDo.getId())).build();
         return Response.created(location).entity(persistedToDo).build();
     }

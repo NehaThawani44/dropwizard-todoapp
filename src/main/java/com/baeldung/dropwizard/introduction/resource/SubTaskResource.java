@@ -65,9 +65,7 @@ public class SubTaskResource {
     public SubTask update(@PathParam("id") final long id, SubTask updatedSubTask) {
         SubTask subTaskToUpdate = subTaskRepository.findById(id);
         if (subTaskToUpdate != null) {
-            // Assuming ToDo has setters for fields that can be updated
             subTaskToUpdate.setTitle(updatedSubTask.getTitle());
-            // Add other fields that can be updated here
             subTaskRepository.update(subTaskToUpdate);
         }
         return subTaskToUpdate;
