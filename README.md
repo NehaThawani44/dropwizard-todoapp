@@ -21,7 +21,7 @@ This microservice is designed to manage To-Dos similar to applications like Todo
 
 1. Clone the repository:
     ```bash
-    git clone https://your-repository-url.git
+    git clone https://github.com/NehaThawani44/dropwizard-todoapp.git
     ```
 
 2. Navigate to the project directory:
