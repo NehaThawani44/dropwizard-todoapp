@@ -56,12 +56,10 @@ public class ToDoResource {
     public Response add(ToDo toDo, @Context UriInfo uriInfo) {
 
         toDo.getSubtasks().forEach(subTask -> {
-            toDo.addSubTask(subTask); // Set the parent ToDo of each SubTask
+            toDo.addSubTask(subTask);
         });
 
-        ToDo persistedToDo = toDoRepository.insert(toDo); // Persist the ToDo along with its SubTasks
-
-        // Building the response
+        ToDo persistedToDo = toDoRepository.insert(toDo);
         URI location = uriInfo.getAbsolutePathBuilder().path(String.valueOf(persistedToDo.getId())).build();
         return Response.created(location).entity(persistedToDo).build();
     }
@@ -73,9 +71,7 @@ public class ToDoResource {
     public ToDo update(@PathParam("id") final long id, ToDo updatedToDo) {
         ToDo toDoToUpdate = toDoRepository.findById(id);
         if (toDoToUpdate != null) {
-            // Assuming ToDo has setters for fields that can be updated
             toDoToUpdate.setTitle(updatedToDo.getTitle());
-            // Add other fields that can be updated here
             toDoRepository.update(toDoToUpdate);
         }
         return toDoToUpdate;
@@ -83,7 +79,6 @@ public class ToDoResource {
 
     @DELETE
     @Path("/{id}")
-
     @UnitOfWork
     public void delete(@PathParam("id") final long id) {
         toDoRepository.deleteById(id);

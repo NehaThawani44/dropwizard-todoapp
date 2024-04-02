@@ -3,6 +3,7 @@ package com.baeldung.dropwizard.introduction;
 import com.baeldung.dropwizard.introduction.configuration.BasicConfiguration;
 import com.baeldung.dropwizard.introduction.domain.SubTask;
 import com.baeldung.dropwizard.introduction.domain.ToDo;
+import com.baeldung.dropwizard.introduction.domain.User;
 import com.baeldung.dropwizard.introduction.repository.SubTaskRepository;
 import com.baeldung.dropwizard.introduction.repository.ToDoRepository;
 import com.baeldung.dropwizard.introduction.resource.SubTaskResource;
@@ -21,14 +22,22 @@ public class Application extends io.dropwizard.Application<BasicConfiguration> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
     public static void main(final String[] args) throws Exception {
-        new Application().run(args);
+        LOGGER.info("Starting application");
+        try {
+            new Application().run(args);
+        } catch (Exception e) {
+            LOGGER.error("Failed to start the application", e);
+            throw e;
+        }
     }
     
   
-    private final HibernateBundle<BasicConfiguration> hibernate = new HibernateBundle<BasicConfiguration>(ToDo.class, SubTask.class) {
+    private final HibernateBundle<BasicConfiguration> hibernate = new HibernateBundle<BasicConfiguration>(ToDo.class, SubTask.class, User.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(BasicConfiguration configuration) {
-            return configuration.getDatabaseAppDataSourceFactory();
+            DataSourceFactory dsf = configuration.getDatabaseAppDataSourceFactory();
+            LOGGER.info("Configuring database with URL: {}", dsf.getUrl());
+            return dsf;
         }
     };
 
@@ -39,19 +48,26 @@ public class Application extends io.dropwizard.Application<BasicConfiguration> {
 
     @Override
     public void initialize(Bootstrap<BasicConfiguration> bootstrap) {
+        LOGGER.info("Initializing application");
         bootstrap.addBundle(hibernate);
     }
 
     @Override
     public void run(BasicConfiguration configuration, Environment environment) throws ClassNotFoundException {
+        LOGGER.info("Running application");
+        LOGGER.info("Initializing application components");
+        try {
+            final ToDoRepository toDoRepository = new ToDoRepository(hibernate.getSessionFactory());
+            final SubTaskRepository subTaskRepository = new SubTaskRepository(hibernate.getSessionFactory());
+            final ToDoResource toDoResource = new ToDoResource(5, toDoRepository);
+            final SubTaskResource subTaskResource = new SubTaskResource(subTaskRepository);
 
-        final ToDoRepository toDoRepository = new ToDoRepository(hibernate.getSessionFactory());
-        final SubTaskRepository subTaskRepository = new SubTaskRepository(hibernate.getSessionFactory());
-        final ToDoResource toDoResource = new ToDoResource(5, toDoRepository);
-        final SubTaskResource subTaskResource = new SubTaskResource(subTaskRepository);
-
-        environment.jersey().register(toDoResource);
-        environment.jersey().register(subTaskResource);
+            environment.jersey().register(toDoResource);
+            environment.jersey().register(subTaskResource);
+            LOGGER.info("Application components initialized successfully");
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize application components", e);
+            throw new RuntimeException("Failed to start the application due to initialization error", e);
+        }
     }
- 
 }

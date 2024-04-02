@@ -40,7 +40,7 @@ public class SubTask {
     private Date version;
 
     public SubTask() {
-        // Default constructor
+
     }
 
     public ToDo getToDo() {
@@ -50,8 +50,6 @@ public class SubTask {
     public void setToDo(ToDo toDo) {
         this.toDo = toDo;
     }
-
-    // Getters and Setters
 
     @ManyToOne
     @JoinColumn(name = "todo_id")

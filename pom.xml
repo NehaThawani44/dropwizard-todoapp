@@ -7,12 +7,8 @@
     <version>SNAPSHOT</version>
     <name>dropwizard</name>
     <packaging>jar</packaging>
+    <groupId>com.baeldung</groupId>
 
-    <parent>
-        <groupId>com.baeldung</groupId>
-        <artifactId>web-modules</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
 
     <dependencies>
 		
@@ -89,6 +85,9 @@
     <properties>
         <dropwizard.version>2.0.0</dropwizard.version>
         <maven-shade-plugin.version>3.5.0</maven-shade-plugin.version>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
 </project>

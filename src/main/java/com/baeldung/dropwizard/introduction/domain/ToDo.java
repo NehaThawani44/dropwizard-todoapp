@@ -40,9 +40,9 @@ public class ToDo   {
     private String description;
 
 
-    @Column(name = "due_date") // Database column for due date
+    @Column(name = "due_date")
     @JsonProperty("dueDate")
-    private LocalDate dueDate; // Using LocalDate for date-only value
+    private LocalDate dueDate;
 
 
     public ToDoStatus getToDoStatus() {
@@ -83,11 +83,15 @@ public class ToDo   {
         this.subtasks = subtasks;
     }
 
-    // OneToMany relationship
+
     @OneToMany(mappedBy = "toDo", cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
-    private Set<SubTask> subtasks = new HashSet<>();
+    private Set<SubTask> subtasks = new HashSet<SubTask>();
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -153,4 +157,12 @@ public class ToDo   {
         subtasks.remove(subTask);
         subTask.setToDo(null);
     }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

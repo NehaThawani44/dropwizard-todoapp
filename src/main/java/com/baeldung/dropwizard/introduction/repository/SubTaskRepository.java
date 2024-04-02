@@ -21,37 +21,28 @@ public class SubTaskRepository extends AbstractDAO<SubTask> {
     }
 
     public SubTask findById(long id) {
-        // Use get() method to fetch SubTask by its ID
-        return (SubTask) currentSession().get(SubTask.class, id);
+        return (SubTask) sessionFactory.getCurrentSession().get(SubTask.class, id);
     }
 
     @SuppressWarnings("unchecked")
     public List<SubTask> findAll() {
-        // Use createCriteria() to fetch all SubTask instances
+
         return sessionFactory.getCurrentSession().createNamedQuery("SubTask.findAll", SubTask.class).getResultList();
     }
 
 
 
     public void delete(SubTask subTask) {
-        // Use the current session to delete a SubTask
         sessionFactory.getCurrentSession().delete(subTask);
     }
 
-    public void update(SubTask subTask) {
-        // Use saveOrUpdate() to update a SubTask instance
-        currentSession().saveOrUpdate(subTask);
-
-    }
 
     public SubTask insert(@Valid SubTask subTask) {
-        // Persist a new SubTask to the database
         return persist(subTask);
     }
 
 
     public void deleteById(long id) {
-        // Find SubTask by ID and delete it
         SubTask subTask = findById(id);
         if (subTask != null) {
             delete(subTask);
