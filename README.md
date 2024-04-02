@@ -68,8 +68,61 @@ curl -X POST http://localhost:8095/todos \
          }'
 		 
 curl -X GET 'http://localhost:8095/todos/2'		 
-
+```
 http://localhost:8095/
 
-Get all the todos : http://localhost:8095/todos/all
+Get all the todos: http://localhost:8095/todos/all
 
+###Response should be somewhat like this:
+
+[
+    {
+        "id": 1,
+        "title": "Complete Project",
+        "description": "Finalize the coding tasks for Project X.",
+        "status": null,
+        "dueDate": null,
+        "subtasks": [],
+        "version": 1711991464422
+    },
+    {
+        "id": 2,
+        "title": "Fix Bugs",
+        "description": "Resolve all issues found during testing.",
+        "status": null,
+        "dueDate": null,
+        "subtasks": [],
+        "version": 1711991644243
+    },
+    {
+        "id": 3,
+        "title": "Complete Project",
+        "description": "Finalize the coding tasks for Project X.",
+        "status": null,
+        "dueDate": null,
+        "subtasks": [],
+        "version": 1711991682651
+    },
+    {
+        "id": 4,
+        "title": "Complete Project",
+        "description": "Finalize the coding tasks for Project X.",
+        "status": null,
+        "dueDate": null,
+        "subtasks": [
+            {
+                "id": 12,
+                "title": "Write Unit Tests",
+                "description": "Create unit tests for all new methods.",
+                "version": 1711992635411
+            },
+            {
+                "id": 13,
+                "title": "Review Code",
+                "description": "Conduct code review with the team.",
+                "version": 1711992635412
+            }
+        ],
+        "version": 1711992635402
+    }
+]
