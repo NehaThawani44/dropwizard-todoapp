@@ -7,7 +7,7 @@
     <version>SNAPSHOT</version>
     <name>dropwizard</name>
     <packaging>jar</packaging>
-    <groupId>com.baeldung</groupId>
+    <groupId>com.leanix</groupId>
 
 
     <dependencies>
@@ -44,6 +44,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>${maven-shade-plugin.version}</version>
                 <configuration>
@@ -71,14 +79,94 @@
                                     implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.baeldung.dropwizard.introduction.Application</mainClass>
+                                    <mainClass>com.leanix.dropwizard.introduction.Application</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.jolokia</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.13.3</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <alias>${project.artifactId}</alias>
+                            <name>${docker.dropwizard.name}:${project.version}</name>
+                            <build>
+                                <from>openjdk:17-slim</from>
+                                <labels>
+                                    <label>maintainer=phauer</label>
+                                </labels>
+                                <assembly>
+                                    <descriptor>docker-assembly.xml</descriptor>
+                                </assembly>
+                                <ports>
+                                    <port>8080</port>
+                                    <port>8081</port>
+                                </ports>
+                                <cmd>
+                                    <shell>java -jar \
+                                        /maven/${project.build.finalName}.jar server \
+                                        /maven/docker-config.yml</shell>
+                                </cmd>
 
+                            </build>
+                            <properties>
+                                <docker.host.address>localhost</docker.host.address><!-- this is not localhost when using boot2docker! -->
+                                <prozu.port>8080</prozu.port>
+                                <prozu.port.admin>8081</prozu.port.admin>
+                            </properties>
+                            ...
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <ports>
+                                    <port>${prozu.port}:8080</port>
+                                    <port>${prozu.port.admin}:8081</port>
+                                </ports>
+                                <volumes>
+                                    <bind>
+                                        <volume>${user.home}/logs:/logs</volume>
+                                    </bind>
+                                </volumes>
+                                <wait>
+                                    <url>http://${docker.host.address}:${prozu.port.admin}/ping</url>
+                                    <time>10000</time>
+                                </wait>
+                                <log>
+                                    <prefix>${project.artifactId}</prefix>
+                                    <color>cyan</color>
+                                </log>
+                            </run>
+                        </image>
+                        <image>
+                            <alias>postgresql</alias>
+                            <name>postgres:42.2.14</name>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <env>
+                                    <POSTGRES_DB>tododbapp</POSTGRES_DB>
+                                    <POSTGRES_USER>admin</POSTGRES_USER>
+                                    <POSTGRES_PASSWORD>test</POSTGRES_PASSWORD>
+                                </env>
+                                <ports>
+                                    <port>5434:5434</port>
+                                </ports>
+                                <wait>
+                                    <log>database system is ready to accept connections</log>
+                                    <time>20000</time>
+                                </wait>
+                                <log>
+                                    <prefix>PostgreSQL</prefix>
+                                    <color>cyan</color>
+                                </log>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
