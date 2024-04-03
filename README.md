@@ -7,7 +7,7 @@ it offers a RESTful API for the full lifecycle management of to-dos and their su
 ## Features
 
 - **CRUD Operations**: Manage your to-dos with full create, read, update, and delete capabilities, including handling of subtasks.
-- **Data Persistence**: Utilizes the H2 file database to ensure data is maintained across application restarts.
+- **Data Persistence**: Utilizes the PostgreSQL to ensure data is maintained across application restarts.
 - **Efficient and Lightweight**: Built on Dropwizard, known for its minimal, lightweight, and rapid startup time.
 - **Flexible Data Access**: Utilizes Hibernate, embracing the power of ORM over the straightforwardness of JDBC and bypassing the need for simpler frameworks like JDBI.
 - **Testing Ready**:  Includes unit and integration tests, ensuring reliable operation.
