@@ -72,11 +72,7 @@ public class ToDoRepositoryTest {
     @Test
     public void testInsertToDo() {
         ToDo mockToDo = new ToDo();
-        mockToDo.setId(1L); // Assuming the ToDo object has an ID set after being persisted
-        // Since Hibernate's session.save() doesn't return an entity or ID,
-        // this line doesn't simulate the actual behavior. Instead, we'll mock the session's behavior to ensure
-        // it's being called, and separately verify the state of the mockToDo after insertion.
-        //doNothing().when(session).save(any(ToDo.class)); // Correct usage for void methods
+        mockToDo.setId(1L); 
         when(session.get(ToDo.class, mockToDo.getId())).thenReturn(mockToDo);
 
         ToDo insertedToDo = toDoRepository.insert(mockToDo); // Insert the mockToDo itself
@@ -84,9 +80,9 @@ public class ToDoRepositoryTest {
         assertNotNull("The inserted ToDo should not be null", insertedToDo);
         assertEquals("The ID of the inserted ToDo should be 1", Long.valueOf(1L), insertedToDo.getId());
 
-        // Verify that `session.save` was called with the mockToDo object
+      
         verify(session).saveOrUpdate(mockToDo);
-        // Optionally, verify no more interactions with the session
+     
         verifyNoMoreInteractions(session);
     }
 
