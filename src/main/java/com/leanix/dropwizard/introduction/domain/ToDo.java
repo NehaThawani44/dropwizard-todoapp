@@ -1,4 +1,4 @@
-package com.baeldung.dropwizard.introduction.domain;
+package com.leanix.dropwizard.introduction.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -6,9 +6,12 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.leanix.dropwizard.introduction.configuration.serialization.FlexibleLocalDateDeserializer;
+import com.leanix.dropwizard.introduction.configuration.serialization.GermanLocalDateSerializer;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -42,39 +45,36 @@ public class ToDo   {
 
     @Column(name = "due_date")
     @JsonProperty("dueDate")
+    @JsonDeserialize(using = FlexibleLocalDateDeserializer.class)
+    @JsonSerialize(using = GermanLocalDateSerializer.class)
     private LocalDate dueDate;
 
 
-    public ToDoStatus getToDoStatus() {
-        return toDoStatus;
+    public ToDoType getType() {
+        return type;
     }
 
-    public void setToDoStatus(ToDoStatus toDoStatus) {
-        this.toDoStatus = toDoStatus;
+    public void setType(ToDoType type) {
+        this.type = type;
     }
 
-    @Enumerated(EnumType.STRING) // Specifies that the enum name should be stored in the database
+    @Enumerated(EnumType.STRING)
+    private ToDoType type;
+
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     @JsonProperty("status")
     private ToDoStatus toDoStatus;
-    public ToDo(String task, String description) {
-    }
-    public ToDo() {
 
-    }
-
-    public Date getVersion() {
-        return version;
-    }
-
-    public void setVersion(Date version) {
-        this.version = version;
-    }
 
     @Version
     private Date version;
 
-
+   /* @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+*/
     public Set<SubTask> getSubtasks() {
         return subtasks;
     }
@@ -89,9 +89,7 @@ public class ToDo   {
     private Set<SubTask> subtasks = new HashSet<SubTask>();
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+
 
     public Long getId() {
         return id;
@@ -127,6 +125,32 @@ public class ToDo   {
     }
 
 
+
+
+    public ToDoStatus getToDoStatus() {
+        return toDoStatus;
+    }
+
+    public void setToDoStatus(ToDoStatus toDoStatus) {
+        this.toDoStatus = toDoStatus;
+    }
+
+
+    public ToDo(String task, String description) {
+    }
+    public ToDo() {
+
+    }
+
+    public Date getVersion() {
+        return version;
+    }
+
+    public void setVersion(Date version) {
+        this.version = version;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,12 +181,6 @@ public class ToDo   {
         subtasks.remove(subTask);
         subTask.setToDo(null);
     }
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
 }

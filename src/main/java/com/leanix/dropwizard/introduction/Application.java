@@ -1,13 +1,13 @@
-package com.baeldung.dropwizard.introduction;
+package com.leanix.dropwizard.introduction;
 
-import com.baeldung.dropwizard.introduction.configuration.BasicConfiguration;
-import com.baeldung.dropwizard.introduction.domain.SubTask;
-import com.baeldung.dropwizard.introduction.domain.ToDo;
-import com.baeldung.dropwizard.introduction.domain.User;
-import com.baeldung.dropwizard.introduction.repository.SubTaskRepository;
-import com.baeldung.dropwizard.introduction.repository.ToDoRepository;
-import com.baeldung.dropwizard.introduction.resource.SubTaskResource;
-import com.baeldung.dropwizard.introduction.resource.ToDoResource;
+import com.leanix.dropwizard.introduction.configuration.BasicConfiguration;
+import com.leanix.dropwizard.introduction.domain.SubTask;
+import com.leanix.dropwizard.introduction.domain.ToDo;
+import com.leanix.dropwizard.introduction.domain.User;
+import com.leanix.dropwizard.introduction.repository.SubTaskRepository;
+import com.leanix.dropwizard.introduction.repository.ToDoRepository;
+import com.leanix.dropwizard.introduction.resource.SubTaskResource;
+import com.leanix.dropwizard.introduction.resource.ToDoResource;
 
 
 import io.dropwizard.db.DataSourceFactory;

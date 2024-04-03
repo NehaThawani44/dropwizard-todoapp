@@ -1,4 +1,4 @@
-package com.baeldung.dropwizard.introduction.domain;
+package com.leanix.dropwizard.introduction.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

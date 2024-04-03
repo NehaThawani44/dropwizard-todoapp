@@ -1,4 +1,4 @@
-package com.baeldung.dropwizard.introduction.domain;
+package com.leanix.dropwizard.introduction.domain;
 
 public enum ToDoStatus {
 

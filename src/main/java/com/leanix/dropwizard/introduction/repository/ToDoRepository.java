@@ -1,6 +1,6 @@
-package com.baeldung.dropwizard.introduction.repository;
+package com.leanix.dropwizard.introduction.repository;
 
-import com.baeldung.dropwizard.introduction.domain.ToDo;
+import com.leanix.dropwizard.introduction.domain.ToDo;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -11,9 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.OptimisticLockException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.validation.Valid;
 
 public class ToDoRepository extends AbstractDAO<ToDo> {
@@ -29,7 +26,7 @@ public class ToDoRepository extends AbstractDAO<ToDo> {
 
 	public ToDo findById(long id) {
 
-	        return (ToDo) sessionFactory.getCurrentSession().get(ToDo.class, id);
+	        return sessionFactory.getCurrentSession().get(ToDo.class, id);
 	    }
 	  
 	   @SuppressWarnings("unchecked")
@@ -49,8 +46,11 @@ public class ToDoRepository extends AbstractDAO<ToDo> {
 		}
 
 		try {
+			sessionFactory.getCurrentSession().refresh(toDo);
 			ToDo mergedToDo = (ToDo) sessionFactory.getCurrentSession().merge(toDo);
+			//sessionFactory.getCurrentSession().refresh(toDo);
 			LOGGER.info("ToDo with ID: {} updated successfully", mergedToDo.getId());
+
 			return mergedToDo;
 		} catch (OptimisticLockException ole) {
 			LOGGER.error("Update failed for ToDo with ID: {} due to concurrent modification", toDo.getId(), ole);
@@ -61,10 +61,11 @@ public class ToDoRepository extends AbstractDAO<ToDo> {
 	        return persist(toDo);
 	    }
 
-	public void deleteById(long id) {
+	public boolean deleteById(long id) {
 		ToDo toDo = findById(id);
 		if (toDo != null) {
 			delete(toDo);
 		}
+		return false;
 	}
 }

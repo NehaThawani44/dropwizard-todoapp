@@ -1,7 +1,7 @@
-package com.baeldung.dropwizard.introduction.resource;
+package com.leanix.dropwizard.introduction.resource;
 
-import com.baeldung.dropwizard.introduction.domain.ToDo;
-import com.baeldung.dropwizard.introduction.repository.ToDoRepository;
+import com.leanix.dropwizard.introduction.domain.ToDo;
+import com.leanix.dropwizard.introduction.repository.ToDoRepository;
 
 import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @Path("/todos")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -24,6 +23,7 @@ public class ToDoResource {
     private final int defaultSize;
     private ToDoRepository toDoRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(ToDoResource.class);
+
     public ToDoResource(final int defaultSize, final ToDoRepository toDoRepository) {
         this.defaultSize = defaultSize;
         this.toDoRepository = toDoRepository;
@@ -37,19 +37,25 @@ public class ToDoResource {
     @GET
     @Path("/all")
     @UnitOfWork
-    public List<ToDo> getToDos() {
-        return toDoRepository.findAll();
+    public Response getToDos() {
+        List<ToDo> todos = toDoRepository.findAll();
+        if (todos.isEmpty()) {
+            return Response.noContent().build();
+        }
+        return Response.ok(todos).build();
     }
 
     @GET
     @Path("/{id}")
     @UnitOfWork
-    public ToDo getById(@PathParam("id") final int id) {
-        return toDoRepository
-          .findById(id);
-          
+    public Response getById(@PathParam("id") final int id) {
+        ToDo todo = toDoRepository.findById(id);
+        if (todo == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(todo).build();
     }
-    
+
     @POST
     @Timed
     @UnitOfWork
@@ -68,19 +74,24 @@ public class ToDoResource {
     @Path("/{id}")
     @Timed
     @UnitOfWork
-    public ToDo update(@PathParam("id") final long id, ToDo updatedToDo) {
+    public Response update(@PathParam("id") final long id, ToDo updatedToDo) {
         ToDo toDoToUpdate = toDoRepository.findById(id);
-        if (toDoToUpdate != null) {
-            toDoToUpdate.setTitle(updatedToDo.getTitle());
-            toDoRepository.update(toDoToUpdate);
+        if (toDoToUpdate == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return toDoToUpdate;
+        toDoToUpdate.setTitle(updatedToDo.getTitle());
+        toDoRepository.update(toDoToUpdate);
+        return Response.ok(toDoToUpdate).build();
     }
 
     @DELETE
     @Path("/{id}")
     @UnitOfWork
-    public void delete(@PathParam("id") final long id) {
-        toDoRepository.deleteById(id);
+    public Response delete(@PathParam("id") final long id) {
+        boolean deleted = toDoRepository.deleteById(id);
+        if (!deleted) {
+            return Response.status(Response.Status.NOT_FOUND).build(); // Not Found if the ToDo to delete doesn't exist
+        }
+        return Response.noContent().build(); // Successfully deleted the ToDo
     }
 }
