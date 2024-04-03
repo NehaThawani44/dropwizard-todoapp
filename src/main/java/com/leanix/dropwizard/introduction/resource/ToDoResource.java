@@ -48,12 +48,12 @@ public class ToDoResource {
     @GET
     @Path("/{id}")
     @UnitOfWork
-    public Response getById(@PathParam("id") final int id) {
-        ToDo todo = toDoRepository.findById(id);
-        if (todo == null) {
+    public Response getById(@PathParam("id") final long id) {
+        ToDo toDo = toDoRepository.findById(id);
+        if (toDo == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(todo).build();
+        return Response.ok(toDo).build();
     }
 
     @POST

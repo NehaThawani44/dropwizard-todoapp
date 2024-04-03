@@ -2,12 +2,14 @@ package com.leanix.dropwizard.introduction.repository;
 
 import com.leanix.dropwizard.introduction.domain.SubTask;
 import io.dropwizard.hibernate.AbstractDAO;
+
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.OptimisticLockException;
 import javax.validation.Valid;
+
 import java.util.List;
 
 public class SubTaskRepository extends AbstractDAO<SubTask> {

@@ -3,6 +3,7 @@ package com.leanix.dropwizard.introduction.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.leanix.dropwizard.introduction.configuration.serialization.FlexibleLocalDateDeserializer;
 import com.leanix.dropwizard.introduction.configuration.serialization.GermanLocalDateSerializer;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
@@ -87,8 +89,6 @@ public class ToDo   {
     @OneToMany(mappedBy = "toDo", cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
     private Set<SubTask> subtasks = new HashSet<SubTask>();
-
-
 
 
     public Long getId() {

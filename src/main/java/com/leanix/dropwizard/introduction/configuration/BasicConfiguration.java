@@ -5,14 +5,18 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
 import io.dropwizard.db.DataSourceFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 public class BasicConfiguration extends Configuration {
-    @NotNull private final int defaultSize;
+    @NotNull
+    private final int defaultSize;
 
     @JsonCreator
     public BasicConfiguration(@JsonProperty("defaultSize") final int defaultSize) {
