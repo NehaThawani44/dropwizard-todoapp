@@ -68,7 +68,7 @@ curl -X POST http://localhost:8095/todos \
       "description": "Go through the API service layer.",
       "status": "PENDING",
       "dueDate": "2023-10-03",
-      "subtasks": []
+  
     },
     {
       "id": 2,
@@ -76,7 +76,7 @@ curl -X POST http://localhost:8095/todos \
       "description": "Check the React components for the dashboard.",
       "status": "PENDING",
       "dueDate": "2023-10-04",
-      "subtasks": []
+    
     }
   ]
  
