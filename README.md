@@ -89,7 +89,7 @@ curl -X GET 'http://localhost:8095/todos/2'
 
 Get all the todos: http://localhost:8095/todos/all
 
-###Response should be somewhat like this:
+###Response should be like this:
 
 {
     "id": 16,
