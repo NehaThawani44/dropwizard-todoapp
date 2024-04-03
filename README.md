@@ -22,7 +22,7 @@ it offers a RESTful API for the full lifecycle management of to-dos and their su
 - Postgresql 42.2.14
 
 ### Installation
- Master branch has apis using Postgresql, the branch h2_config is only for reference for H2 database config.
+Note: Master branch has apis using Postgresql, the branch h2_config is only for reference for H2 database config.
 1. Clone the repository:
     ```bash
     git clone https://github.com/NehaThawani44/dropwizard-todoapp.git
@@ -40,7 +40,7 @@ it offers a RESTful API for the full lifecycle management of to-dos and their su
 
 4. Start the application:
     ```bash
-    java -jar target/dropwizard-todo-1.0-SNAPSHOT.jar server config.yml
+    java -jar target/dropwizard-SNAPSHOT.jar server config.yml
     ```
 
 Now, the service is up and running, ready to manage to-dos.
