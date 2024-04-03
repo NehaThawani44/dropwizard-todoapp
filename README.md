@@ -7,7 +7,7 @@ it offers a RESTful API for the full lifecycle management of to-dos and their su
 ## Features
 
 - **CRUD Operations**: Manage your to-dos with full create, read, update, and delete capabilities, including handling of subtasks.
-- **Data Persistence**: Utilizes the H2 file database to ensure data is maintained across application restarts.
+- **Data Persistence**: Utilizes the PostgreSQL to ensure data is maintained across application restarts.
 - **Efficient and Lightweight**: Built on Dropwizard, known for its minimal, lightweight, and rapid startup time.
 - **Flexible Data Access**: Utilizes Hibernate, embracing the power of ORM over the straightforwardness of JDBC and bypassing the need for simpler frameworks like JDBI.
 - **Testing Ready**:  Includes unit and integration tests, ensuring reliable operation.
@@ -22,7 +22,7 @@ it offers a RESTful API for the full lifecycle management of to-dos and their su
 - Postgresql 42.2.14
 
 ### Installation
- Master branch has apis using Postgresql, the branch h2_config is only for reference for H2 database config.
+Note: Master branch has apis using Postgresql, the branch h2_config is only for reference for H2 database config.
 1. Clone the repository:
     ```bash
     git clone https://github.com/NehaThawani44/dropwizard-todoapp.git
@@ -40,7 +40,7 @@ it offers a RESTful API for the full lifecycle management of to-dos and their su
 
 4. Start the application:
     ```bash
-    java -jar target/dropwizard-todo-1.0-SNAPSHOT.jar server config.yml
+    java -jar target/dropwizard-SNAPSHOT.jar server config.yml
     ```
 
 Now, the service is up and running, ready to manage to-dos.
@@ -68,7 +68,7 @@ curl -X POST http://localhost:8095/todos \
       "description": "Go through the API service layer.",
       "status": "PENDING",
       "dueDate": "2023-10-03",
-      "subtasks": []
+  
     },
     {
       "id": 2,
@@ -76,7 +76,7 @@ curl -X POST http://localhost:8095/todos \
       "description": "Check the React components for the dashboard.",
       "status": "PENDING",
       "dueDate": "2023-10-04",
-      "subtasks": []
+    
     }
   ]
  
@@ -89,7 +89,7 @@ curl -X GET 'http://localhost:8095/todos/2'
 
 Get all the todos: http://localhost:8095/todos/all
 
-###Response should be somewhat like this:
+###Response should be like this:
 
 {
     "id": 16,
